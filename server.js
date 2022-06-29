@@ -11,37 +11,31 @@ dotenv.config({ path: './config/config.env' });
 // Connect to database
 connectDB();
 
-// Route files
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
-
 const app = express();
 
-// Body parser
-app.use(express.json());
+// Import routes
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 // Logging middleware in development
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Enable CORS
-app.use(cors());
+// Body parser
+app.use(express.json());
+
+// app.use(cors()); // allows all origins
+
+if ((process.env.NODE_ENV = 'development')) {
+  app.use(cors({ origin: `http://localhost:3000` }));
+}
 
 // Mount routes
-app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api', authRoutes);
+app.use('/api', userRoutes);
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV} mode on Port ${PORT}`);
-});
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
-  console.log(`Error: ${err.message}`);
-
-  // Close server and exit process
-  server.close(() => process.exit(1));
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server running in ${process.env.NODE_ENV} mode on Port ${port}`);
 });

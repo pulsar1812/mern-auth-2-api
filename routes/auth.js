@@ -1,5 +1,5 @@
 const express = require('express');
-
+// Controllers
 const {
   signup,
   accountActivation,
@@ -9,6 +9,7 @@ const {
   googleLogin,
   facebookLogin,
 } = require('../controllers/auth');
+// Validators
 const {
   userSignupValidator,
   userSigninValidator,
